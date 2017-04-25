@@ -1,0 +1,15 @@
+import platform, os
+env = Environment()
+
+#ustawienia kompilatora visual studio 2013 (cl)
+if(platform.system() == "Windows"):
+    env.Append( CPPFLAGS = ' /EHsc /MD /W4 ' )
+
+elif(platform.system() == "Linux"):
+    env.Append( CPPFLAGS = '-Wall --std=c++11' )
+    env.Append( LINKFLAGS = '-Wall --std=c++11' )
+
+else:
+    print platform.system() + " not supported"
+
+env.SharedLibrary('ZprMonitor', ['src/ZprMonitor.cpp'] )

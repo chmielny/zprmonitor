@@ -2,8 +2,9 @@
 #define __ZPRMONITOR_H__
 
 class ZprMonitor {
-public"
-    ZprMonitorf();
+public:
+    ZprMonitor();
+    
 private:
 };
 
