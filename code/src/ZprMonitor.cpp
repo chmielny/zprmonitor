@@ -14,3 +14,6 @@ ZprMonitor::ZprMonitor()
 }
 
 
+ZprMonitor::errorCode_ ZprMonitor::registerCallback(daemonType_ daemon, observerType_ obs, std::function< void(void) > callbackFunc, int maxValue, int minValue, int periodTime, std::string diskPath ) {
+    return OK;
+}    
