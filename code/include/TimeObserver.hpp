@@ -5,7 +5,7 @@ class TimeObserver : public DaemonObserver {
 private:
 	int timePeriod_;
 public:
-	void fromTimerNotify();
+	void updateTimer();
 };
 
 
