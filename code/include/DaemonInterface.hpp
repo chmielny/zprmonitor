@@ -1,16 +1,16 @@
 #ifndef DAEMONINTERFACE_HPP_
 #define DAEMONINTERFACE_HPP_
-#include<boost/signal.hpp>
+#include<boost/signals2.hpp>
 
-typedef boost::signal<void (int)> Signal;
-typedef boost::function<void (int)> Slot;
 class DaemonInterface {
 private:
+    typedef boost::signals2::signal<void (int temp)> Signal;
+    typedef Signal::slot_type Slot;
 	Signal signal_;
 	int value;
 public:
 	void connect();//Slot);
-	int getActValue();
+	virtual int getActValue() = 0;
 	int notifyObservers();
 };
 

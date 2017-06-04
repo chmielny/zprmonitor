@@ -29,7 +29,9 @@ public:
         ERROR = -1
     };
     ZprMonitor();
+    virtual ~ZprMonitor();
     errorCode_ registerCallback(daemonType_, observerType_, std::function< void(void) >, int, int, int, std::string);    
+    virtual int getActValue();
 private:
     std::vector<DaemonObserver> daemonCollection_;
     std::vector<DaemonInterface> daemonInterfaceCollection_;
