@@ -14,7 +14,7 @@ int RamDaemon::getActValue() {
 }
 #endif
 
-#ifndef _WINDOWS
+#ifndef _LINUX
 #include "windows.h"
 int RamDaemon::getActValue() {
     MEMORYSTATUSEX memInfo;
