@@ -1,5 +1,6 @@
 import platform, os
 env = Environment()
+env.Append( CPPDEFINES=['_ZPRBUILD'])
 
 #ustawienia kompilatora visual studio 2013 (cl)
 if(platform.system() == "Windows"):
