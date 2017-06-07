@@ -5,13 +5,14 @@ env = Environment()
 if(platform.system() == "Windows"):
     env.Append( CPPDEFINES=['_WINDOWS'])
     env.Append( CPPFLAGS = ' /EHsc /MD /W4 ' )
+    env.Program('testapp', ['src/testapp.cpp'] )
 
 elif(platform.system() == "Linux"):
     env.Append( CPPDEFINES=['_LINUX'])
     env.Append( CPPFLAGS = '-Wall --std=c++11' )
     env.Append( LINKFLAGS = '-Wall --std=c++11' )
+    env.Program('testapp', ['src/testapp.cpp'], LIBS=['dl'] )
 
 else:
     print platform.system() + " not supported"
 
-env.Program('testapp', ['src/testapp.cpp'], LIBS=['dl'] )

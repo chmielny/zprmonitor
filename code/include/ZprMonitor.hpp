@@ -5,11 +5,19 @@
 #include<vector>
 
 #ifdef _ZPRBUILD
-#include"DaemonObserver.hpp"
-#include"DaemonInterface.hpp"
+    #include"DaemonObserver.hpp"
+    #include"DaemonInterface.hpp"
+    # define DLLIMPORT __declspec (dllexport)
+#else /* Not BUILDING_DLL */
+    # define DLLIMPORT __declspec (dllimport)
 #endif
 
+
+#ifdef _WINDOWS
+class DLLIMPORT  ZprMonitor {
+#else
 class ZprMonitor {
+#endif
 public:
     enum daemonType_ {
         RAM,
@@ -38,7 +46,7 @@ public:
 #ifdef _ZPRBUILD
 private:
     std::vector<DaemonObserver> daemonCollection_;
-    std::vector<DaemonInterface> daemonInterfaceCollection_;
+//    std::vector<DaemonInterface> daemonInterfaceCollection_;
 #endif
 };
 

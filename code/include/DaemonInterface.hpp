@@ -12,6 +12,8 @@ public:
 	void connect();//Slot);
 	virtual int getActValue() = 0;
 	int notifyObservers();
+	DaemonInterface(){};
+	~DaemonInterface(){};
 };
 
 

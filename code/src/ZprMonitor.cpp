@@ -1,13 +1,30 @@
 #include"../include/ZprMonitor.hpp"
 #include"../include/RamDaemon.hpp"
 
-extern "C" ZprMonitor* create_object() {
-    return new ZprMonitor;
+#ifdef _ZPRBUILD
+    # define DLLIMPORT __declspec (dllexport)
+#else /* Not BUILDING_DLL */
+    # define DLLIMPORT __declspec (dllimport)
+#endif
+
+
+extern "C" 
+{
+    #ifdef _WINDOWS 
+    DLLIMPORT 
+    #endif 
+    ZprMonitor* create_object() {
+        return new ZprMonitor;
+    }
+
+    #ifdef _WINDOWS 
+    DLLIMPORT 
+    #endif 
+    void destroy_object( ZprMonitor* object ) {
+        delete object;
+    }
 }
 
-extern "C" void destroy_object( ZprMonitor* object ) {
-    delete object;
-}
 
 ZprMonitor::ZprMonitor()
 {
