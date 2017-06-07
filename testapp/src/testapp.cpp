@@ -1,12 +1,12 @@
-#include "include/ZprMonitor.hpp"
+#include "../../code/include/ZprMonitor.hpp"
 #include <dlfcn.h>
 #include <iostream>
 
 
 int main() {
-    void* handle = dlopen("./libZprMonitor.so", RTLD_LAZY);
+    void* handle = dlopen("../code/libZprMonitor.so", RTLD_LAZY);
     if(handle == NULL) {
-        std::cout << "nie otwiera sie" << std::endl;
+        std::cout << "Biblioteka zprmonitor nie otwiera sie:" << std::endl;
         std::cout << dlerror();
         std::cout << std::endl;
     } else {
