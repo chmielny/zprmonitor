@@ -29,8 +29,10 @@ int main() {
         create = (ZprMonitor* (*)())GetProcAddress(handle, "create_object");
         destroy = (void (*)(ZprMonitor*))GetProcAddress(handle, "destroy_object");
 #endif
+
+
         ZprMonitor* myClass = (ZprMonitor*)create();
-        std::cout << myClass->getActValue();
+        std::cout << myClass->getActValue() << std::endl;
         destroy( myClass );
     }
 }
