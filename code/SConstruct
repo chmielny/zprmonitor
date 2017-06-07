@@ -4,7 +4,7 @@ env = Environment()
 #ustawienia kompilatora visual studio 2013 (cl)
 if(platform.system() == "Windows"):
     env.Append( CPPDEFINES=['_WINDOWS'])
-    env.Append( CPPFLAGS = ' /EHsc /MD /W4 ' )
+    env.Append( CPPFLAGS = ' /EHsc /MD /W4 /I C:/boost_1_64_0 ' )
 
 elif(platform.system() == "Linux"):
     env.Append( CPPDEFINES=['_LINUX'])

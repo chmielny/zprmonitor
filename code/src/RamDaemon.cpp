@@ -28,7 +28,7 @@ int RamDaemon::getActValue() {
     }
     else {
         std::cerr << "memInfo failed" << std::endl;
-        return -1
+        return -1;
     }
 }
 #endif
