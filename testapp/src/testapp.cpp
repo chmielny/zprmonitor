@@ -32,9 +32,9 @@ int main() {
 
 
         ZprMonitor* myClass = (ZprMonitor*)create();
-        std::cout << myClass->getActValue(ZprMonitor::RAM) << std::endl;
-        std::cout << myClass->getActValue(ZprMonitor::CPU) << std::endl;
-        std::cout << myClass->getActValue(ZprMonitor::DISKPATH) << std::endl;
+        std::cout << "RAM: "  << myClass->getActValue(ZprMonitor::RAM) << std::endl;
+        std::cout << "CPU: "  <<myClass->getActValue(ZprMonitor::CPU) << std::endl;
+        std::cout << "DISK: " << myClass->getActValue(ZprMonitor::DISKPATH) << std::endl;
         destroy( myClass );
     }
 }
