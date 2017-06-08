@@ -4,6 +4,8 @@
     #include"../include/RamDaemon.hpp"
     #include"../include/CpuDaemon.hpp"
     #include"../include/DiskPathDaemon.hpp"
+    #include"../include/OverrunObserver.hpp"
+    #include<boost/bind.hpp>
     # define DLLIMPORT __declspec (dllexport)
 #else /* Not BUILD */
     # define DLLIMPORT __declspec (dllimport)
@@ -38,8 +40,17 @@ ZprMonitor::~ZprMonitor()
     // destruktor 
 }
 
-ZprMonitor::errorCode_ ZprMonitor::registerCallback(daemonType_ daemon, observerType_ obs, std::function< void(void) > callbackFunc, int maxValue, int minValue, int periodTime, std::string diskPath ) {
-    callbackFunc();
+ZprMonitor::errorCode_ ZprMonitor::registerCallback(daemonType_ daemon, observerType_ observer, std::function< void(void) > callbackFunc, int maxValue, int minValue, int periodTime, std::string diskPath ) {
+    DaemonObserver* tmpObserver;
+    DaemonInterface* tmpDaemon;
+
+    tmpDaemon = getDaemon_(daemon);
+    if(observer == OVERRUN)
+        tmpObserver = new OverrunObserver( callbackFunc, maxValue );
+    tmpDaemon->connect(boost::bind(&DaemonObserver::update, tmpObserver, _1 ));
+
+//    callbackFunc();
+    
     return OK;
 }    
 
@@ -62,3 +73,12 @@ DaemonInterface* ZprMonitor::getDaemon_(daemonType_ daemon) {
         tmpDaemon = new DiskPathDaemon();
     return tmpDaemon;
 }
+
+/*
+DaemonObserver* ZprMonitor::getObserver_(observerType_ observer, std::function< void(void) > callbackFunc) {
+    DaemonObserver* tmpObserver;
+    if(observer == OVERRUN)
+        tmpObserver = new OverrunObserver( callbackFunc );
+    return tmpObserver;
+}
+*/

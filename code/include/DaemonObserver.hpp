@@ -3,11 +3,11 @@
 #include <functional>
 
 class DaemonObserver {
-private:
+protected:
 	std::function<void(void)> userFunctionPtr_;
 public:
-	DaemonObserver();
-	void udpate(int);
+	DaemonObserver( std::function<void(void)> );
+	virtual void update(int) {} ;
 };
 
 

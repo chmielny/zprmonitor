@@ -46,6 +46,7 @@ public:
 #ifdef _ZPRBUILD
 private:
     DaemonInterface* getDaemon_(daemonType_);
+//    DaemonObserver* getObserver_(observerType_, std::function< void(void) >);
     std::vector<DaemonObserver> daemonCollection_;
 //    std::vector<DaemonInterface> daemonInterfaceCollection_;
 #endif

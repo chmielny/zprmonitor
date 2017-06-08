@@ -16,4 +16,4 @@ elif(platform.system() == "Linux"):
 else:
     print platform.system() + " not supported"
 
-env.SharedLibrary('ZprMonitor', ['src/ZprMonitor.cpp', 'src/RamDaemon.cpp', 'src/DaemonInterface.cpp', 'src/CpuDaemon.cpp', 'src/DiskPathDaemon.cpp'] )
+env.SharedLibrary('ZprMonitor', ['src/ZprMonitor.cpp', 'src/RamDaemon.cpp', 'src/DaemonInterface.cpp', 'src/CpuDaemon.cpp', 'src/DiskPathDaemon.cpp', 'src/DaemonObserver.cpp', 'src/OverrunObserver.cpp'] )
