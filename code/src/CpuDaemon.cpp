@@ -24,6 +24,7 @@ int CpuDaemon::getActValue() {
 
     if (totalUser < lastTotalUser || totalUserLow < lastTotalUserLow ||
         totalSys < lastTotalSys || totalIdle < lastTotalIdle){
+        std::cerr << "getting cpu usage failed" << std::endl;
         percent = -1.0;
     }
     else{
@@ -60,7 +61,7 @@ double getCurrentValue() {
 int CpuDaemon::getActValue() {
     init();
     if (cpuQuery != 0) {
-        Sleep(100);
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));
         return getCurrentValue();
     }
     else {
