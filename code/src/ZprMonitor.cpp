@@ -1,9 +1,10 @@
 #include"../include/ZprMonitor.hpp"
-#include"../include/RamDaemon.hpp"
 
 #ifdef _ZPRBUILD
+    #include"../include/RamDaemon.hpp"
+    #include"../include/CpuDaemon.hpp"
     # define DLLIMPORT __declspec (dllexport)
-#else /* Not BUILDING_DLL */
+#else /* Not BUILD */
     # define DLLIMPORT __declspec (dllimport)
 #endif
 
@@ -41,9 +42,19 @@ ZprMonitor::errorCode_ ZprMonitor::registerCallback(daemonType_ daemon, observer
 }    
 
 
-int ZprMonitor::getActValue() {
+int ZprMonitor::getActValue( daemonType_ daemon ) {
     int value;
-    RamDaemon tmp;
-    value = tmp.getActValue();
+    DaemonInterface* tmp;
+    tmp = getDaemon_(daemon);
+    value = tmp->getActValue();
     return value;
-}    
+}
+
+DaemonInterface* ZprMonitor::getDaemon_(daemonType_ daemon) {
+    DaemonInterface* tmpDaemon;
+    if(daemon == RAM)
+        tmpDaemon = new RamDaemon();
+    else if (daemon == CPU)
+        tmpDaemon = new CpuDaemon();
+    return tmpDaemon;
+}

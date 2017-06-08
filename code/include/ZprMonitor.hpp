@@ -41,10 +41,11 @@ public:
     ZprMonitor();
     virtual ~ZprMonitor();
     errorCode_ registerCallback(daemonType_, observerType_, std::function< void(void) >, int, int, int, std::string);    
-    virtual int getActValue();
+    virtual int getActValue(daemonType_);
 
 #ifdef _ZPRBUILD
 private:
+    DaemonInterface* getDaemon_(daemonType_);
     std::vector<DaemonObserver> daemonCollection_;
 //    std::vector<DaemonInterface> daemonInterfaceCollection_;
 #endif
