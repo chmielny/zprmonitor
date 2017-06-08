@@ -6,6 +6,7 @@ class CpuDaemon : public DaemonInterface {
 public:
 	void getDaemonInstance();
 	int getActValue();
+	void doMeasure();
 };
 
 

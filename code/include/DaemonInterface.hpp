@@ -4,14 +4,14 @@
 #include<boost/function.hpp>
 
 class DaemonInterface {
-private:
+protected:
     typedef boost::signals2::signal<void (int)> Signal;
 	Signal signal_;
-	int value;
+	int actValue_;
 public:
 	void connect( boost::function<void (int)> );
 	virtual int getActValue() = 0;
-	int notifyObservers();
+	virtual void doMeasure() = 0;
 	DaemonInterface(){};
 	~DaemonInterface(){};
 };

@@ -45,10 +45,10 @@ ZprMonitor::errorCode_ ZprMonitor::registerCallback(daemonType_ daemon, observer
     DaemonInterface* tmpDaemon;
 
     tmpDaemon = getDaemon_(daemon);
-    if(observer == OVERRUN)
+  //  if(observer == OVERRUN)
         tmpObserver = new OverrunObserver( callbackFunc, maxValue );
     tmpDaemon->connect(boost::bind(&DaemonObserver::update, tmpObserver, _1 ));
-
+    tmpDaemon->doMeasure();
 //    callbackFunc();
     
     return OK;
@@ -59,6 +59,7 @@ int ZprMonitor::getActValue( daemonType_ daemon ) {
     int value;
     DaemonInterface* tmp;
     tmp = getDaemon_(daemon);
+    tmp->doMeasure();
     value = tmp->getActValue();
     return value;
 }

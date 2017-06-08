@@ -14,6 +14,7 @@ private:
 #endif
 public:
 	int getActValue();
+	void doMeasure();
 	void getInstance(std::string);
 	std::string getPath();
 };

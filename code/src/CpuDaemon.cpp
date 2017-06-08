@@ -4,6 +4,9 @@
 #include <thread>
 #include <fstream>
 
+void CpuDaemon::doMeasure() {
+}
+
 #ifdef _LINUX
 int CpuDaemon::getActValue() {
     double percent;

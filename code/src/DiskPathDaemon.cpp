@@ -1,6 +1,10 @@
 #include "../include/DiskPathDaemon.hpp"
 #include <iostream>
 
+void DiskPathDaemon::doMeasure() {
+
+}
+
 #ifdef _LINUX
 int DiskPathDaemon::getActValue() {
     statvfs("/home/", &actStat_);

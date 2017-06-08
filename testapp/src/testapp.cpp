@@ -45,7 +45,7 @@ int main() {
 
         std::function < void( void ) > myFunAddr;
         myFunAddr = &myFun;
-        myClass->registerCallback(ZprMonitor::CPU, ZprMonitor::OVERRUN, myFunAddr, 0, 0, 0, "0");    
+        myClass->registerCallback(ZprMonitor::RAM, ZprMonitor::OVERRUN, myFunAddr, 90, 0, 0, "0");    
         while(1);
         destroy( myClass );
     }
