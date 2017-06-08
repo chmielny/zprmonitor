@@ -1,10 +1,17 @@
 #include "../../code/include/ZprMonitor.hpp"
 #include <iostream>
+#include <functional>
 #ifdef _LINUX
     #include <dlfcn.h>
 #elif _WINDOWS
     #include <windows.h>
 #endif
+
+void myFun( void ) {
+    std::cout << "Udalo sie!" << std::endl;
+}
+
+
 
 int main() {
 #ifdef _LINUX	
@@ -35,6 +42,11 @@ int main() {
         std::cout << "RAM: "  << myClass->getActValue(ZprMonitor::RAM) << std::endl;
         std::cout << "CPU: "  <<myClass->getActValue(ZprMonitor::CPU) << std::endl;
         std::cout << "DISK: " << myClass->getActValue(ZprMonitor::DISKPATH) << std::endl;
+
+        std::function < void( void ) > myFunAddr;
+        myFunAddr = &myFun;
+        myClass->registerCallback(ZprMonitor::CPU, ZprMonitor::OVERRUN, myFunAddr, 0, 0, 0, "0");    
+        while(1);
         destroy( myClass );
     }
 }
