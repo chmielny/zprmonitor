@@ -2,13 +2,16 @@
 #define DISKPATHDAEMON_HPP_
 #include<string>
 #include"DaemonInterface.hpp"
-#include <sys/statvfs.h>
+#ifdef _LINUX
+    #include <sys/statvfs.h>
+#endif
 
 class DiskPathDaemon : public DaemonInterface {
 private:
 	std::string diskPath_;
+#ifdef _LINUX
     struct statvfs actStat_; 
-
+#endif
 public:
 	int getActValue();
 	void getInstance(std::string);

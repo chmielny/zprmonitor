@@ -3,6 +3,7 @@
 #ifdef _ZPRBUILD
     #include"../include/RamDaemon.hpp"
     #include"../include/CpuDaemon.hpp"
+    #include"../include/DiskPathDaemon.hpp"
     # define DLLIMPORT __declspec (dllexport)
 #else /* Not BUILD */
     # define DLLIMPORT __declspec (dllimport)
@@ -56,5 +57,7 @@ DaemonInterface* ZprMonitor::getDaemon_(daemonType_ daemon) {
         tmpDaemon = new RamDaemon();
     else if (daemon == CPU)
         tmpDaemon = new CpuDaemon();
+    else if (daemon == DISKPATH)
+        tmpDaemon = new DiskPathDaemon();
     return tmpDaemon;
 }
