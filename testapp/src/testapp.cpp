@@ -9,10 +9,13 @@
     #include <windows.h>
 #endif
 
-void myFun( void ) {
-    std::cout << "Przekroczono zadany parametr!" << std::endl;
+void myCpuMax( void ) {
+    std::cout << "Przekroczono CPU 60 %" << std::endl;
 }
 
+void myCpuMin( void ) {
+    std::cout << "CPU ponizej 20 %" << std::endl;
+}
 
 
 int main() {
@@ -48,9 +51,15 @@ int main() {
         std::cout << "CPU: "  <<myClass->getActValue(ZprMonitor::CPU) << std::endl;
         std::cout << "DISK: " << myClass->getActValue(ZprMonitor::DISKPATH) << std::endl;
 
-        std::function < void( void ) > myFunAddr;
-        myFunAddr = &myFun;
-        myClass->registerCallback(ZprMonitor::CPU, ZprMonitor::OVERRUN, myFunAddr, 60, 0, 0, "0");    
+        std::function < void( void ) > myCpuMaxAddr, myCpuMinAddr;
+
+        myCpuMaxAddr = &myCpuMax;
+        myCpuMinAddr = &myCpuMin;
+
+        myClass->registerCallback(ZprMonitor::CPU, ZprMonitor::OVERRUN, myCpuMaxAddr, 60, 0, 0, "0");   
+        myClass->registerCallback(ZprMonitor::CPU, ZprMonitor::UNDERRUN, myCpuMinAddr, 0, 20, 0, "0");    
+
+
         while(1)
             std::this_thread::sleep_for(std::chrono::milliseconds(200));
         destroy( myClass );
