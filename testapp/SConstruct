@@ -9,9 +9,9 @@ if(platform.system() == "Windows"):
 
 elif(platform.system() == "Linux"):
     env.Append( CPPDEFINES=['_LINUX'])
-    env.Append( CPPFLAGS = '-Wall --std=c++11' )
-    env.Append( LINKFLAGS = '-Wall --std=c++11' )
-    env.Program('testapp', ['src/testapp.cpp'], LIBS=['dl'] )
+    env.Append( CPPFLAGS = '-pthread -Wall --std=c++11' )
+    env.Append( LINKFLAGS = '-pthread -Wall --std=c++11' )
+    env.Program('testapp', ['src/testapp.cpp'], LIBS=['dl', 'pthread'] )
 
 else:
     print platform.system() + " not supported"

@@ -6,6 +6,7 @@
     #include"../include/DiskPathDaemon.hpp"
     #include"../include/OverrunObserver.hpp"
     #include<boost/bind.hpp>
+    #include<iostream>
     # define DLLIMPORT __declspec (dllexport)
 #else /* Not BUILD */
     # define DLLIMPORT __declspec (dllimport)
@@ -29,38 +30,49 @@ extern "C"
     }
 }
 
-
 ZprMonitor::ZprMonitor()
 {
     // konstruktor bezparametrowy
+
+    daemonInterfaceCollection_.push_back(getDaemon_(RAM));
+    daemonInterfaceCollection_.push_back(getDaemon_(CPU));
+    daemonInterfaceCollection_.push_back(getDaemon_(DISKPATH));
+
+    threadFunctor_ = new MeasureTimerThread(std::ref(daemonInterfaceCollection_));
+    timerThread_ = new std::thread( std::ref(*threadFunctor_) );
 }
 
 ZprMonitor::~ZprMonitor()
 {
     // destruktor 
+    timerThread_->join();
 }
 
 ZprMonitor::errorCode_ ZprMonitor::registerCallback(daemonType_ daemon, observerType_ observer, std::function< void(void) > callbackFunc, int maxValue, int minValue, int periodTime, std::string diskPath ) {
     DaemonObserver* tmpObserver;
     DaemonInterface* tmpDaemon;
+    if(daemon == RAM)
+       tmpDaemon = daemonInterfaceCollection_[0];         
+    else if (daemon == CPU)
+       tmpDaemon = daemonInterfaceCollection_[1];         
+    else if (daemon == DISKPATH)
+       tmpDaemon = daemonInterfaceCollection_[2];         
 
-    tmpDaemon = getDaemon_(daemon);
-  //  if(observer == OVERRUN)
-        tmpObserver = new OverrunObserver( callbackFunc, maxValue );
+//    tmpDaemon = getDaemon_(daemon);
+    tmpObserver = new OverrunObserver( callbackFunc, maxValue );
     tmpDaemon->connect(boost::bind(&DaemonObserver::update, tmpObserver, _1 ));
-    tmpDaemon->doMeasure();
-//    callbackFunc();
     
     return OK;
 }    
 
-
 int ZprMonitor::getActValue( daemonType_ daemon ) {
     int value;
-    DaemonInterface* tmp;
-    tmp = getDaemon_(daemon);
-    tmp->doMeasure();
-    value = tmp->getActValue();
+    if(daemon == RAM)
+       value = daemonInterfaceCollection_[0]->getActValue();         
+    else if (daemon == CPU)
+       value = daemonInterfaceCollection_[1]->getActValue();         
+    else if (daemon == DISKPATH)
+       value = daemonInterfaceCollection_[2]->getActValue();         
     return value;
 }
 
@@ -75,11 +87,6 @@ DaemonInterface* ZprMonitor::getDaemon_(daemonType_ daemon) {
     return tmpDaemon;
 }
 
-/*
-DaemonObserver* ZprMonitor::getObserver_(observerType_ observer, std::function< void(void) > callbackFunc) {
-    DaemonObserver* tmpObserver;
-    if(observer == OVERRUN)
-        tmpObserver = new OverrunObserver( callbackFunc );
-    return tmpObserver;
+
+int main() {
 }
-*/

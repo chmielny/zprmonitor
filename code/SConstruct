@@ -10,10 +10,14 @@ if(platform.system() == "Windows"):
 
 elif(platform.system() == "Linux"):
     env.Append( CPPDEFINES=['_LINUX'])
-    env.Append( CPPFLAGS = '-Wall --std=c++11' )
-    env.Append( LINKFLAGS = '-Wall --std=c++11' )
+    env.Append( CPPFLAGS = '-pthread -Wall --std=c++11' )
+    env.Append( LINKFLAGS = '-pthread -Wall --std=c++11' )
+    env.Append( LIBS = ['pthread'] )
 
 else:
     print platform.system() + " not supported"
 
-env.SharedLibrary('ZprMonitor', ['src/ZprMonitor.cpp', 'src/RamDaemon.cpp', 'src/DaemonInterface.cpp', 'src/CpuDaemon.cpp', 'src/DiskPathDaemon.cpp', 'src/DaemonObserver.cpp', 'src/OverrunObserver.cpp'] )
+env.SharedLibrary('ZprMonitor', ['src/ZprMonitor.cpp', 'src/RamDaemon.cpp', 
+                                 'src/DaemonInterface.cpp', 'src/CpuDaemon.cpp', 
+                                 'src/DiskPathDaemon.cpp', 'src/DaemonObserver.cpp', 
+                                 'src/OverrunObserver.cpp', 'src/MeasureTimerThread.cpp'] )

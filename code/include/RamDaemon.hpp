@@ -10,7 +10,6 @@
 
 class RamDaemon : public DaemonInterface {
 public:
-	int getActValue();
 	void getDaemonInstance();
 	void doMeasure();
 

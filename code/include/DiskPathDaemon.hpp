@@ -13,9 +13,8 @@ private:
     struct statvfs actStat_; 
 #endif
 public:
-	int getActValue();
-	void doMeasure();
 	void getInstance(std::string);
+	void doMeasure();
 	std::string getPath();
 };
 

@@ -2,11 +2,6 @@
 #include <iostream>
 
 
-int RamDaemon::getActValue() {
-    return actValue_;
-}
-
-
 #ifndef _WINDOWS
 void RamDaemon::doMeasure() {
     if(sysinfo(&memInfo_) == 0) {

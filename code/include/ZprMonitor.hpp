@@ -7,6 +7,9 @@
 #ifdef _ZPRBUILD
     #include"DaemonObserver.hpp"
     #include"DaemonInterface.hpp"
+    #include"MeasureTimerThread.hpp"
+    #include <memory>
+    #include <thread>
     # define DLLIMPORT __declspec (dllexport)
 #else /* Not BUILDING_DLL */
     # define DLLIMPORT __declspec (dllimport)
@@ -45,10 +48,12 @@ public:
 
 #ifdef _ZPRBUILD
 private:
+    std::thread *timerThread_;
+    MeasureTimerThread *threadFunctor_;
     DaemonInterface* getDaemon_(daemonType_);
-//    DaemonObserver* getObserver_(observerType_, std::function< void(void) >);
-    std::vector<DaemonObserver> daemonCollection_;
-//    std::vector<DaemonInterface> daemonInterfaceCollection_;
+//    std::vector< std::unique_ptr<DaemonObserver> > observerCollection_;
+//    std::vector< std::unique_ptr<DaemonInterface> > daemonInterfaceCollection_;
+    std::vector< DaemonInterface* > daemonInterfaceCollection_;
 #endif
 };
 

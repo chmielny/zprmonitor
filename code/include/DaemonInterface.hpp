@@ -10,7 +10,7 @@ protected:
 	int actValue_;
 public:
 	void connect( boost::function<void (int)> );
-	virtual int getActValue() = 0;
+	virtual int getActValue();
 	virtual void doMeasure() = 0;
 	DaemonInterface(){};
 	~DaemonInterface(){};

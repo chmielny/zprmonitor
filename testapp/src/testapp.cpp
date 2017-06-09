@@ -1,6 +1,8 @@
 #include "../../code/include/ZprMonitor.hpp"
 #include <iostream>
 #include <functional>
+#include <thread>
+#include <chrono>
 #ifdef _LINUX
     #include <dlfcn.h>
 #elif _WINDOWS
@@ -8,7 +10,7 @@
 #endif
 
 void myFun( void ) {
-    std::cout << "Udalo sie!" << std::endl;
+    std::cout << "Przekroczono zadany parametr!" << std::endl;
 }
 
 
@@ -39,13 +41,16 @@ int main() {
 
 
         ZprMonitor* myClass = (ZprMonitor*)create();
+
+        std::this_thread::sleep_for(std::chrono::milliseconds(200));
+
         std::cout << "RAM: "  << myClass->getActValue(ZprMonitor::RAM) << std::endl;
         std::cout << "CPU: "  <<myClass->getActValue(ZprMonitor::CPU) << std::endl;
         std::cout << "DISK: " << myClass->getActValue(ZprMonitor::DISKPATH) << std::endl;
 
         std::function < void( void ) > myFunAddr;
         myFunAddr = &myFun;
-        myClass->registerCallback(ZprMonitor::RAM, ZprMonitor::OVERRUN, myFunAddr, 90, 0, 0, "0");    
+        myClass->registerCallback(ZprMonitor::CPU, ZprMonitor::OVERRUN, myFunAddr, 60, 0, 0, "0");    
         while(1);
         destroy( myClass );
     }

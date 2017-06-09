@@ -4,11 +4,9 @@
 #include <thread>
 #include <fstream>
 
-void CpuDaemon::doMeasure() {
-}
 
 #ifdef _LINUX
-int CpuDaemon::getActValue() {
+void CpuDaemon::doMeasure() {
     double percent;
     unsigned long long lastTotalUser, lastTotalUserLow, lastTotalSys, lastTotalIdle;
     unsigned long long totalUser, totalUserLow, totalSys, totalIdle, total;
@@ -38,7 +36,8 @@ int CpuDaemon::getActValue() {
         percent /= total;
         percent *= 100;
     }
-    return (int)percent;
+    actValue_ = (int)percent;
+    signal_(actValue_); 
 }
 
 #elif _WINDOWS
@@ -61,15 +60,16 @@ double getCurrentValue() {
     return counterVal.doubleValue;
 }
 
-int CpuDaemon::getActValue() {
+void CpuDaemon::doMeasure() {
     init();
     if (cpuQuery != 0) {
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
-        return getCurrentValue();
+        actValue_ = getCurrentValue();
+        signal_(actValue_); 
     }
     else {
         std::cerr << "getting cpu usage failed" << std::endl;
-        return -1;
+        actValue_ = -1;
     }
 }
 
