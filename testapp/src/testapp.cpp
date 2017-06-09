@@ -57,7 +57,7 @@ int main() {
 
         ZprMonitor* myClass = (ZprMonitor*)create();
 
-        std::this_thread::sleep_for(std::chrono::milliseconds(200));
+        std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 
         std::cout << "RAM: "  << myClass->getActValue(ZprMonitor::RAM) << std::endl;
         std::cout << "CPU: "  <<myClass->getActValue(ZprMonitor::CPU) << std::endl;
