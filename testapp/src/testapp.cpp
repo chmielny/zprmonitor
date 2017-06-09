@@ -25,6 +25,11 @@ void myCpuAverMax( void ) {
     std::cout << "CPU - srednia kroczaca z 5s powyzej 50%" << std::endl;
 }
 
+void myCpuAverMin( void ) {
+    std::cout << "CPU - srednia kroczaca z 10s ponizej 10%" << std::endl;
+}
+
+
 int main() {
 #ifdef _LINUX	
     void* handle = dlopen("../code/libZprMonitor.so", RTLD_LAZY);
@@ -58,17 +63,19 @@ int main() {
         std::cout << "CPU: "  <<myClass->getActValue(ZprMonitor::CPU) << std::endl;
         std::cout << "DISK: " << myClass->getActValue(ZprMonitor::DISKPATH) << std::endl;
 
-        std::function < void( void ) > myCpuMaxAddr, myCpuMinAddr, myCpuRangeAddr, myCpuAverMaxAddr;
+        std::function < void( void ) > myCpuMaxAddr, myCpuMinAddr, myCpuRangeAddr, myCpuAverMaxAddr, myCpuAverMinAddr;
 
         myCpuMaxAddr = &myCpuMax;
         myCpuMinAddr = &myCpuMin;
         myCpuRangeAddr = &myCpuRange;
         myCpuAverMaxAddr = &myCpuAverMax;
+        myCpuAverMinAddr = &myCpuAverMin;
 
         myClass->registerCallback(ZprMonitor::CPU, ZprMonitor::OVERRUN, myCpuMaxAddr, 0, 60, 0, "0");   
         myClass->registerCallback(ZprMonitor::CPU, ZprMonitor::UNDERRUN, myCpuMinAddr, 20, 0, 0, "0");    
         myClass->registerCallback(ZprMonitor::CPU, ZprMonitor::INRANGE, myCpuRangeAddr, 20, 70, 0, "0");    
         myClass->registerCallback(ZprMonitor::CPU, ZprMonitor::AVERAGEOVERRUN, myCpuAverMaxAddr, 0, 50, 5, "0");    
+        myClass->registerCallback(ZprMonitor::CPU, ZprMonitor::AVERAGEUNDERRUN, myCpuAverMinAddr, 20, 0, 5, "0");    
 
 
         while(1)

@@ -22,4 +22,4 @@ env.SharedLibrary('ZprMonitor', ['src/ZprMonitor.cpp', 'src/RamDaemon.cpp',
                                  'src/DiskPathDaemon.cpp', 'src/DaemonObserver.cpp', 
                                  'src/OverrunObserver.cpp', 'src/MeasureTimerThread.cpp',
                                  'src/UnderrunObserver.cpp', 'src/InRangeObserver.cpp',
-                                 'src/AverageOverrunObserver.cpp' ] )
+                                 'src/AverageOverrunObserver.cpp', 'src/AverageUnderrunObserver.cpp' ] )

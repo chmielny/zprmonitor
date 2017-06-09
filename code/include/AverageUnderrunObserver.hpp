@@ -1,11 +1,18 @@
 #ifndef AVERAGEUNDERRUNOBSERVER_HPP_
 #define AVERAGEUNDERRUNOBSERVER_HPP_
+#include <functional>
+#include "DaemonObserver.hpp"
+#include <boost/circular_buffer.hpp>
 
-class AverageUnderrunObserver : public TimeObserver {
+class AverageUnderrunObserver : public DaemonObserver {
 private:
 	int minLimit_;
+	int time_;      //czas w sekundach
+    boost::circular_buffer<int>* buff_;
 public:
-	AverageUnderrunObserver(int, int);
+	AverageUnderrunObserver(std::function<void(void)> ,int, int );
+	~AverageUnderrunObserver();
+	void update(int);
 };
 
 
