@@ -17,6 +17,9 @@ void myCpuMin( void ) {
     std::cout << "CPU ponizej 20 %" << std::endl;
 }
 
+void myCpuRange( void ) {
+    std::cout << "CPU poza zakresem 20% - 70%" << std::endl;
+}
 
 int main() {
 #ifdef _LINUX	
@@ -51,13 +54,15 @@ int main() {
         std::cout << "CPU: "  <<myClass->getActValue(ZprMonitor::CPU) << std::endl;
         std::cout << "DISK: " << myClass->getActValue(ZprMonitor::DISKPATH) << std::endl;
 
-        std::function < void( void ) > myCpuMaxAddr, myCpuMinAddr;
+        std::function < void( void ) > myCpuMaxAddr, myCpuMinAddr, myCpuRangeAddr;
 
         myCpuMaxAddr = &myCpuMax;
         myCpuMinAddr = &myCpuMin;
+        myCpuRangeAddr = &myCpuRange;
 
-        myClass->registerCallback(ZprMonitor::CPU, ZprMonitor::OVERRUN, myCpuMaxAddr, 60, 0, 0, "0");   
-        myClass->registerCallback(ZprMonitor::CPU, ZprMonitor::UNDERRUN, myCpuMinAddr, 0, 20, 0, "0");    
+        myClass->registerCallback(ZprMonitor::CPU, ZprMonitor::OVERRUN, myCpuMaxAddr, 0, 60, 0, "0");   
+        myClass->registerCallback(ZprMonitor::CPU, ZprMonitor::UNDERRUN, myCpuMinAddr, 20, 0, 0, "0");    
+        myClass->registerCallback(ZprMonitor::CPU, ZprMonitor::INRANGE, myCpuRangeAddr, 20, 70, 0, "0");    
 
 
         while(1)

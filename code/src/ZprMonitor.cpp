@@ -6,6 +6,7 @@
     #include"../include/DiskPathDaemon.hpp"
     #include"../include/OverrunObserver.hpp"
     #include"../include/UnderrunObserver.hpp"
+    #include"../include/InRangeObserver.hpp"
     #include<boost/bind.hpp>
     #include<iostream>
     # define DLLIMPORT __declspec (dllexport)
@@ -49,7 +50,8 @@ ZprMonitor::~ZprMonitor()
     timerThread_->join();
 }
 
-ZprMonitor::errorCode_ ZprMonitor::registerCallback(daemonType_ daemon, observerType_ observer, std::function< void(void) > callbackFunc, int maxValue, int minValue, int periodTime, std::string diskPath ) {
+ZprMonitor::errorCode_ ZprMonitor::registerCallback(daemonType_ daemon, observerType_ observer, 
+        std::function< void(void) > callbackFunc, int minValue, int maxValue, int periodTime, std::string diskPath ) {
     DaemonObserver* tmpObserver;
     DaemonInterface* tmpDaemon;
 
@@ -64,6 +66,8 @@ ZprMonitor::errorCode_ ZprMonitor::registerCallback(daemonType_ daemon, observer
         tmpObserver = new OverrunObserver( callbackFunc, maxValue );
     else if(observer == UNDERRUN)
         tmpObserver = new UnderrunObserver( callbackFunc, minValue );
+    else if(observer == INRANGE)
+        tmpObserver = new InRangeObserver( callbackFunc, minValue, maxValue );
     
     tmpDaemon->connect(boost::bind(&DaemonObserver::update, tmpObserver, _1 ));
     
