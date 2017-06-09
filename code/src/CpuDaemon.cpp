@@ -17,7 +17,7 @@ void CpuDaemon::doMeasure() {
     ifs >> tmp >> lastTotalUser >> lastTotalUserLow >> lastTotalSys >> lastTotalIdle ;
     ifs.close();
     
-    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    std::this_thread::sleep_for(std::chrono::milliseconds(50));
 
     ifs.open("/proc/stat");
     ifs >> tmp >> totalUser >> totalUserLow >> totalSys >> totalIdle ;
@@ -63,7 +63,7 @@ double getCurrentValue() {
 void CpuDaemon::doMeasure() {
     init();
     if (cpuQuery != 0) {
-        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+        std::this_thread::sleep_for(std::chrono::milliseconds(50));
         actValue_ = getCurrentValue();
         signal_(actValue_); 
     }

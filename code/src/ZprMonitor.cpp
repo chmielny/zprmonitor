@@ -7,6 +7,7 @@
     #include"../include/OverrunObserver.hpp"
     #include"../include/UnderrunObserver.hpp"
     #include"../include/InRangeObserver.hpp"
+    #include"../include/AverageOverrunObserver.hpp"
     #include<boost/bind.hpp>
     #include<iostream>
     # define DLLIMPORT __declspec (dllexport)
@@ -68,6 +69,8 @@ ZprMonitor::errorCode_ ZprMonitor::registerCallback(daemonType_ daemon, observer
         tmpObserver = new UnderrunObserver( callbackFunc, minValue );
     else if(observer == INRANGE)
         tmpObserver = new InRangeObserver( callbackFunc, minValue, maxValue );
+    else if(observer == AVERAGEOVERRUN)
+        tmpObserver = new AverageOverrunObserver( callbackFunc, maxValue, periodTime );
     
     tmpDaemon->connect(boost::bind(&DaemonObserver::update, tmpObserver, _1 ));
     
