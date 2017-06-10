@@ -1,3 +1,11 @@
+/**
+ * @file
+ *
+ * \class InRangeObserver
+ * Observetor sprawdzajacy w metodze update() wywolywanej przez operator() warunek wyjscia parametru poza zakres (minLimit_, maxLimit_)
+ * i uruchamiajacy w razie czego funkcje zarejestrowana przez uzytkownika.
+ */
+
 #ifndef INRANGEOBSERVER_HPP_
 #define INRANGEOBSERVER_HPP_
 #include <functional>

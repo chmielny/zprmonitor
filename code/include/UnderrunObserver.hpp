@@ -1,3 +1,11 @@
+/**
+ * @file
+ *
+ * \class UnderrunObserver
+ * Observetor sprawdzajacy w metodze update() wywolywanej przez operator() warunek przekroczenia przez parametr wartosci minLimit_
+ * i uruchamiajacy w razie czego funkcje zarejestrowana przez uzytkownika.
+ */
+
 #ifndef UNDERRUNOBSERVER_HPP_
 #define UNDERRUNOBSERVER_HPP_
 #include "DaemonObserver.hpp"
