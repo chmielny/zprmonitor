@@ -29,6 +29,13 @@ void myCpuAverMin( void ) {
     std::cout << "CPU - srednia kroczaca z 10s ponizej 10%" << std::endl;
 }
 
+void myDiskMax( void ) {
+    std::cout << "/home 20GB wolnego miejsca przekroczono" << std::endl;
+}
+
+void myDiskMaxMS( void ) {
+    std::cout << "Dysk C: ponizej 10GB wolnego miejsca" << std::endl;
+}
 
 int main() {
 #ifdef _LINUX	
@@ -65,7 +72,8 @@ int main() {
         std::cout << "DISK C: : " << myClass->getActValue("C:") << std::endl;
 #endif
 
-        std::function < void( void ) > myCpuMaxAddr, myCpuMinAddr, myCpuRangeAddr, myCpuAverMaxAddr, myCpuAverMinAddr;
+        std::function < void( void ) > myCpuMaxAddr, myCpuMinAddr, myCpuRangeAddr, myCpuAverMaxAddr, myCpuAverMinAddr,
+                                        myDiskMaxAddr;
 
         myCpuMaxAddr = &myCpuMax;
         myCpuMinAddr = &myCpuMin;
@@ -80,6 +88,13 @@ int main() {
         myClass->registerCallback(ZprMonitor::CPU, ZprMonitor::INRANGE, myCpuRangeAddr, 20, 70, 0, "0");    
         myClass->registerCallback(ZprMonitor::CPU, ZprMonitor::AVERAGEOVERRUN, myCpuAverMaxAddr, 0, 50, 5, "0");    
         myClass->registerCallback(ZprMonitor::CPU, ZprMonitor::AVERAGEUNDERRUN, myCpuAverMinAddr, 20, 0, 5, "0");    
+#ifdef _LINUX     
+        myDiskMaxAddr = &myDiskMax;
+        myClass->registerCallback(ZprMonitor::DISKPATH, ZprMonitor::OVERRUN, myDiskMaxAddr, 0, 20, 0, "/home");    
+#elif _WINDOWS
+        myDiskMaxAddr = &myDiskMaxMS;
+        myClass->registerCallback(ZprMonitor::DISKPATH, ZprMonitor::OVERRUN, myDiskMaxAddr, 0, 10, 0, "C:");    
+#endif
 
         std::this_thread::sleep_for(std::chrono::milliseconds(5000));
         std::cout<< "Wylaczam callback od CPU ponizej 20%" << std::endl;
