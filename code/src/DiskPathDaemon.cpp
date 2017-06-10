@@ -4,9 +4,10 @@
 
 #ifdef _LINUX
 void DiskPathDaemon::doMeasure() {
-    if(statvfs(diskPath_.c_str(), &actStat_) == 0)
+    if(statvfs(diskPath_.c_str(), &actStat_) == 0) {
         actValue_ = actStat_.f_bfree * actStat_.f_bsize / 1024 / 1024 / 1024; 
-    else {
+        signal_(actValue_); 
+    } else {
         std::cerr << "getting disc free space failed" << std::endl;
         actValue_ = -1;
     }
