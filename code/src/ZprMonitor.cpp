@@ -81,10 +81,7 @@ unsigned long ZprMonitor::registerCallback(daemonType_ daemon, observerType_ obs
     ++observerId_; 
     observerCollection_.insert(std::make_pair( observerId_ , tmpObserver));
  
-//    tmpDaemon->connect(boost::bind(&DaemonObserver::operator(), observerCollection_[observerId_], _1 ));
     tmpDaemon->connect(observerCollection_[observerId_]);
-
-//    tmpDaemon->connect(boost::bind(&DaemonObserver::update, tmpObserver, _1 ));
     
     return observerId_;
 }    
