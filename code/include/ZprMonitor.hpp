@@ -57,7 +57,6 @@ private:
     DaemonInterface* getDaemon_(daemonType_, std::string);
     std::map< unsigned long, DaemonObserver* > observerCollection_;
     std::vector< DaemonInterface* > daemonInterfaceCollection_;
-//    std::vector< std::unique_ptr<DaemonInterface> > daemonInterfaceCollection_;
 #endif
 };
 

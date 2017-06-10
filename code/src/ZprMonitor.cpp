@@ -42,13 +42,22 @@ ZprMonitor::ZprMonitor()
 
     observerId_ = 1000;
 
-    threadFunctor_ = new MeasureTimerThread(std::ref(daemonInterfaceCollection_));
+    threadFunctor_ = new MeasureTimerThread(daemonInterfaceCollection_);
     timerThread_ = new std::thread( std::ref(*threadFunctor_) );
 }
 
 ZprMonitor::~ZprMonitor()
-{
+{   
+    std::vector< DaemonInterface* > tmpDmnIntColl(daemonInterfaceCollection_);
+    daemonInterfaceCollection_.clear();
+
     timerThread_->join();
+
+    std::for_each(tmpDmnIntColl.begin(), tmpDmnIntColl.end(), [](DaemonInterface* tmp){ delete tmp;});
+    delete timerThread_;
+    delete threadFunctor_;
+
+    std::for_each(observerCollection_.begin(), observerCollection_.end(), [](std::pair<unsigned long, DaemonObserver*> tmp){ delete tmp.second; });
 }
 
 unsigned long ZprMonitor::registerCallback(daemonType_ daemon, observerType_ observer, 
@@ -99,6 +108,7 @@ ZprMonitor::errorCode_ ZprMonitor::unregisterCallback(unsigned long observer) {
     std::for_each(daemonInterfaceCollection_.begin(), daemonInterfaceCollection_.end(), [&](DaemonInterface* tmp ) {tmp->disconnect(tmpObs);} );
     
     delete tmpObs;
+    observerCollection_.erase(observer);
     return retTmp;
 }
 

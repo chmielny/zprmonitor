@@ -81,12 +81,12 @@ int main() {
         myClass->registerCallback(ZprMonitor::CPU, ZprMonitor::AVERAGEOVERRUN, myCpuAverMaxAddr, 0, 50, 5, "0");    
         myClass->registerCallback(ZprMonitor::CPU, ZprMonitor::AVERAGEUNDERRUN, myCpuAverMinAddr, 20, 0, 5, "0");    
 
-        std::this_thread::sleep_for(std::chrono::milliseconds(10000));
+        std::this_thread::sleep_for(std::chrono::milliseconds(5000));
         std::cout<< "Wylaczam callback od CPU ponizej 20%" << std::endl;
         myClass->unregisterCallback(minCpu);
         
-        while(1)
-            std::this_thread::sleep_for(std::chrono::milliseconds(200));
+        std::cin.get();
+        std::cout<<"Wylaczanie aplikacji"<<std::endl;
         destroy( myClass );
     }
 }

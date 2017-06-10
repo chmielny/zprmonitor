@@ -7,7 +7,7 @@ public:
     void operator()( void );
     MeasureTimerThread(std::vector< DaemonInterface* > &);
 private:    
-    std::vector< DaemonInterface* > daemons_;
+    std::vector< DaemonInterface* > &daemons_;
 };
 
 #endif //MEASURETIMERTHREAD_HPP_
