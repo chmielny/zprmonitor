@@ -23,10 +23,10 @@ void RamDaemon::doMeasure() {
     memInfo.dwLength = sizeof(MEMORYSTATUSEX);
     if (memInfo.dwLength != 0) {
         GlobalMemoryStatusEx(&memInfo);
-        DWORDLONG totalVirtualMem = memInfo.ullTotalPageFile;
+//        DWORDLONG totalVirtualMem = memInfo.ullTotalPageFile;
         DWORDLONG totalPhysMem = memInfo.ullTotalPhys;
         DWORDLONG physMemUsed = memInfo.ullTotalPhys - memInfo.ullAvailPhys;
-        actValue_ = physMemUsed * 100 / totalPhysMem;
+        actValue_ = static_cast<int>(physMemUsed * 100 / totalPhysMem);
         signal_(actValue_); 
     }
     else {

@@ -15,11 +15,11 @@ void DiskPathDaemon::doMeasure() {
 #elif _WINDOWS
 #include<Windows.h>
 void DiskPathDaemon::doMeasure() {
-    typedef ULARGE_INTEGER PULARGE_INTEGER;
-    PULARGE_INTEGER dataQuery;
+//    typedef ULARGE_INTEGER PULARGE_INTEGER;
+    ULARGE_INTEGER dataQuery;
 
     if (GetDiskFreeSpaceEx(diskPath_.c_str(), &dataQuery, NULL, NULL)) {
-        actValue_ = dataQuery.QuadPart / 1024 / 1024 / 1024;
+        actValue_ = static_cast<int>(dataQuery.QuadPart / 1024 / 1024 / 1024);
         signal_(actValue_); 
     }
     else {
