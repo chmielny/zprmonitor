@@ -17,3 +17,7 @@ void AverageOverrunObserver::update(int value) {
         if( (std::accumulate(buff_->begin(), buff_->end(), 0) / static_cast<int>(buff_->size()) ) > maxLimit_)
             userFunctionPtr_();
 }
+
+void AverageOverrunObserver::operator()(int value) {
+    update(value);
+}

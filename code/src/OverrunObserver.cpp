@@ -7,3 +7,7 @@ void OverrunObserver::update(int value) {
     if( value > maxLimit_)
         userFunctionPtr_();
 }
+
+void OverrunObserver::operator()(int value) {
+    update(value);
+}

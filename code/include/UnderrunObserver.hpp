@@ -8,6 +8,7 @@ private:
 public:
 	UnderrunObserver(std::function<void(void)> ,int );
 	void update(int);
+	void operator()(int);
 };
 
 

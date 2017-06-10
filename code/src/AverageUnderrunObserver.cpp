@@ -17,3 +17,7 @@ void AverageUnderrunObserver::update(int value) {
         if( (std::accumulate(buff_->begin(), buff_->end(), 0) / static_cast<int>(buff_->size()) ) < minLimit_)
             userFunctionPtr_();
 }
+
+void AverageUnderrunObserver::operator()(int value) {
+    update(value);
+}

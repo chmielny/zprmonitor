@@ -10,6 +10,7 @@ private:
 public:
 	InRangeObserver(std::function<void(void)> ,int, int );
 	void update(int);
+	void operator()(int);
 };
 
 

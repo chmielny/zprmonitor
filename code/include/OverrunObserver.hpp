@@ -9,6 +9,7 @@ private:
 public:
 	OverrunObserver(std::function<void(void)> ,int );
 	void update(int);
+	void operator()(int);
 };
 
 

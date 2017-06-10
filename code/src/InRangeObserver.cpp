@@ -8,3 +8,7 @@ void InRangeObserver::update(int value) {
     if( (value > maxLimit_) || (value < minLimit_) )
         userFunctionPtr_();
 }
+
+void InRangeObserver::operator()(int value) {
+    update(value);
+}

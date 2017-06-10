@@ -13,6 +13,7 @@ public:
 	AverageOverrunObserver(std::function<void(void)> ,int, int );
 	~AverageOverrunObserver();
 	void update(int);
+	void operator()(int);
 };
 
 

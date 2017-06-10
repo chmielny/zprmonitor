@@ -2,6 +2,7 @@
 #define DAEMONINTERFACE_HPP_
 #include<boost/signals2.hpp>
 #include<boost/function.hpp>
+#include "../include/DaemonObserver.hpp"
 
 class DaemonInterface {
 protected:
@@ -9,7 +10,8 @@ protected:
 	Signal signal_;
 	int actValue_;
 public:
-	void connect( boost::function<void (int)> );
+	void connect( DaemonObserver* );
+	void disconnect( DaemonObserver* );
 	virtual int getActValue();
 	virtual void doMeasure() = 0;
 	DaemonInterface(){};

@@ -7,3 +7,7 @@ void UnderrunObserver::update(int value) {
     if( value < minLimit_)
         userFunctionPtr_();
 }
+
+void UnderrunObserver::operator()(int value) {
+    update(value);
+}

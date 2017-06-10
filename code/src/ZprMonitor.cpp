@@ -11,6 +11,7 @@
     #include"../include/AverageUnderrunObserver.hpp"
     #include<boost/bind.hpp>
     #include<iostream>
+    #include<utility>
     # define DLLIMPORT __declspec (dllexport)
 #else /* Not BUILD */
     # define DLLIMPORT __declspec (dllimport)
@@ -42,6 +43,8 @@ ZprMonitor::ZprMonitor()
     daemonInterfaceCollection_.push_back(getDaemon_(CPU));
     daemonInterfaceCollection_.push_back(getDaemon_(DISKPATH));
 
+    observerId_ = 1000;
+
     threadFunctor_ = new MeasureTimerThread(std::ref(daemonInterfaceCollection_));
     timerThread_ = new std::thread( std::ref(*threadFunctor_) );
 }
@@ -52,7 +55,7 @@ ZprMonitor::~ZprMonitor()
     timerThread_->join();
 }
 
-ZprMonitor::errorCode_ ZprMonitor::registerCallback(daemonType_ daemon, observerType_ observer, 
+unsigned long ZprMonitor::registerCallback(daemonType_ daemon, observerType_ observer, 
         std::function< void(void) > callbackFunc, int minValue, int maxValue, int periodTime, std::string diskPath ) {
     DaemonObserver* tmpObserver;
     DaemonInterface* tmpDaemon;
@@ -75,10 +78,35 @@ ZprMonitor::errorCode_ ZprMonitor::registerCallback(daemonType_ daemon, observer
     else if(observer == AVERAGEUNDERRUN)
         tmpObserver = new AverageUnderrunObserver( callbackFunc, minValue, periodTime );
     
-    tmpDaemon->connect(boost::bind(&DaemonObserver::update, tmpObserver, _1 ));
+    ++observerId_; 
+    observerCollection_.insert(std::make_pair( observerId_ , tmpObserver));
+ 
+//    tmpDaemon->connect(boost::bind(&DaemonObserver::operator(), observerCollection_[observerId_], _1 ));
+    tmpDaemon->connect(observerCollection_[observerId_]);
+
+//    tmpDaemon->connect(boost::bind(&DaemonObserver::update, tmpObserver, _1 ));
     
-    return OK;
+    return observerId_;
 }    
+
+ZprMonitor::errorCode_ ZprMonitor::unregisterCallback(unsigned long observer) {
+    errorCode_ retTmp;
+    DaemonObserver* tmpObs;
+    try {
+        tmpObs = observerCollection_.at(observer);
+        retTmp = OK;
+    }
+    catch (const std::out_of_range& oor) {
+        std::cerr << "Nie ma takiego obserwatora " << oor.what() << std::endl;
+        retTmp = ERROR;
+    }
+    
+    std::for_each(daemonInterfaceCollection_.begin(), daemonInterfaceCollection_.end(), [&](DaemonInterface* tmp ) {tmp->disconnect(tmpObs);} );
+    
+    delete tmpObs;
+    return retTmp;
+}
+
 
 int ZprMonitor::getActValue( daemonType_ daemon ) {
     int value;
@@ -90,6 +118,7 @@ int ZprMonitor::getActValue( daemonType_ daemon ) {
        value = daemonInterfaceCollection_[2]->getActValue();         
     return value;
 }
+
 
 DaemonInterface* ZprMonitor::getDaemon_(daemonType_ daemon) {
     DaemonInterface* tmpDaemon;
