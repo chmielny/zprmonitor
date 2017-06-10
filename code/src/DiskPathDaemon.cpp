@@ -4,7 +4,7 @@
 
 #ifdef _LINUX
 void DiskPathDaemon::doMeasure() {
-    statvfs("/home/", &actStat_);
+    statvfs(diskPath_.c_str(), &actStat_);
     actValue_ = actStat_.f_bfree * actStat_.f_bsize / 1024 / 1024 / 1024; 
 }
 
@@ -14,7 +14,7 @@ void DiskPathDaemon::doMeasure() {
     typedef ULARGE_INTEGER PULARGE_INTEGER;
     PULARGE_INTEGER dataQuery;
 
-    if (GetDiskFreeSpaceEx(NULL, &dataQuery, NULL, NULL)) {
+    if (GetDiskFreeSpaceEx(diskPath_.c_str(), &dataQuery, NULL, NULL)) {
         actValue_ = dataQuery.QuadPart / 1024 / 1024 / 1024;
         signal_(actValue_); 
     }
@@ -24,3 +24,10 @@ void DiskPathDaemon::doMeasure() {
     }
 }
 #endif
+
+DiskPathDaemon::DiskPathDaemon() {
+    diskPath_ = ".";
+}
+
+DiskPathDaemon::DiskPathDaemon(std::string userPath) : diskPath_(userPath) {
+}

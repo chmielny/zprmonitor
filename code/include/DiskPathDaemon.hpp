@@ -14,6 +14,8 @@ private:
 #endif
 public:
 	void getInstance(std::string);
+	DiskPathDaemon(std::string);
+	DiskPathDaemon();
 	void doMeasure();
 	std::string getPath();
 };
