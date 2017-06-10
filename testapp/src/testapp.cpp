@@ -57,11 +57,13 @@ int main() {
 
         ZprMonitor* myClass = (ZprMonitor*)create();
 
-        std::this_thread::sleep_for(std::chrono::milliseconds(1000));
-
         std::cout << "RAM: "  << myClass->getActValue(ZprMonitor::RAM) << std::endl;
         std::cout << "CPU: "  <<myClass->getActValue(ZprMonitor::CPU) << std::endl;
-        std::cout << "DISK: " << myClass->getActValue(ZprMonitor::DISKPATH) << std::endl;
+#ifdef _LINUX     
+        std::cout << "DISK /home : " << myClass->getActValue("/home") << std::endl;
+#elif _WINDOWS
+        std::cout << "DISK C: : " << myClass->getActValue("C:") << std::endl;
+#endif
 
         std::function < void( void ) > myCpuMaxAddr, myCpuMinAddr, myCpuRangeAddr, myCpuAverMaxAddr, myCpuAverMinAddr;
 
@@ -80,7 +82,7 @@ int main() {
         myClass->registerCallback(ZprMonitor::CPU, ZprMonitor::AVERAGEUNDERRUN, myCpuAverMinAddr, 20, 0, 5, "0");    
 
         std::this_thread::sleep_for(std::chrono::milliseconds(10000));
-        std::cout<< "Wylaczam callback od CPU poniżej 20%" << std::endl;
+        std::cout<< "Wylaczam callback od CPU ponizej 20%" << std::endl;
         myClass->unregisterCallback(minCpu);
         
         while(1)

@@ -15,7 +15,7 @@ public:
 	virtual int getActValue();
 	virtual void doMeasure() = 0;
 	DaemonInterface(){};
-	~DaemonInterface(){};
+	virtual ~DaemonInterface(){};
 };
 
 

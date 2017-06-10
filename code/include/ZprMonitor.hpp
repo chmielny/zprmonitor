@@ -25,10 +25,10 @@ public:
     enum daemonType_ {
         RAM,
         CPU,
-        TASK,
+//        TASK,
         DISKPATH,
-        DATA,
-        USER
+//        DATA,
+//        USER
     };
     enum observerType_ {
         OVERRUN,
@@ -46,6 +46,7 @@ public:
     virtual unsigned long registerCallback(daemonType_, observerType_, std::function< void(void) >, int, int, int, std::string);    
     virtual errorCode_ unregisterCallback(unsigned long);    
     virtual int getActValue(daemonType_);
+    virtual int getActValue(std::string);   //get free diskspace in GB by path
 
 #ifdef _ZPRBUILD
 private:
@@ -53,6 +54,7 @@ private:
     std::thread *timerThread_;
     MeasureTimerThread *threadFunctor_;
     DaemonInterface* getDaemon_(daemonType_);
+    DaemonInterface* getDaemon_(daemonType_, std::string);
     std::map< unsigned long, DaemonObserver* > observerCollection_;
     std::vector< DaemonInterface* > daemonInterfaceCollection_;
 //    std::vector< std::unique_ptr<DaemonInterface> > daemonInterfaceCollection_;

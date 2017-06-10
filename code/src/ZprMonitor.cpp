@@ -37,11 +37,8 @@ extern "C"
 
 ZprMonitor::ZprMonitor()
 {
-    // konstruktor bezparametrowy
-
     daemonInterfaceCollection_.push_back(getDaemon_(RAM));
     daemonInterfaceCollection_.push_back(getDaemon_(CPU));
-    daemonInterfaceCollection_.push_back(getDaemon_(DISKPATH));
 
     observerId_ = 1000;
 
@@ -51,7 +48,6 @@ ZprMonitor::ZprMonitor()
 
 ZprMonitor::~ZprMonitor()
 {
-    // destruktor 
     timerThread_->join();
 }
 
@@ -64,8 +60,10 @@ unsigned long ZprMonitor::registerCallback(daemonType_ daemon, observerType_ obs
        tmpDaemon = daemonInterfaceCollection_[0];         
     else if (daemon == CPU)
        tmpDaemon = daemonInterfaceCollection_[1];         
-    else if (daemon == DISKPATH)
-       tmpDaemon = daemonInterfaceCollection_[2];         
+    else if (daemon == DISKPATH) {
+        tmpDaemon = getDaemon_(DISKPATH, diskPath);         
+        daemonInterfaceCollection_.push_back(tmpDaemon);
+    }
 
     if(observer == OVERRUN)
         tmpObserver = new OverrunObserver( callbackFunc, maxValue );
@@ -107,15 +105,31 @@ ZprMonitor::errorCode_ ZprMonitor::unregisterCallback(unsigned long observer) {
 
 int ZprMonitor::getActValue( daemonType_ daemon ) {
     int value;
-    if(daemon == RAM)
-       value = daemonInterfaceCollection_[0]->getActValue();         
-    else if (daemon == CPU)
-       value = daemonInterfaceCollection_[1]->getActValue();         
-    else if (daemon == DISKPATH)
-       value = daemonInterfaceCollection_[2]->getActValue();         
+    DaemonInterface* tmpDaemon;
+    if(daemon == RAM){
+        daemonInterfaceCollection_[0]->doMeasure();
+        value = daemonInterfaceCollection_[0]->getActValue();         
+    } else if (daemon == CPU) {
+        daemonInterfaceCollection_[1]->doMeasure();
+        value = daemonInterfaceCollection_[1]->getActValue();         
+    } else if (daemon == DISKPATH) {
+        tmpDaemon = getDaemon_(DISKPATH);
+        tmpDaemon->doMeasure();
+        value = tmpDaemon->getActValue();
+        delete tmpDaemon;         
+    }
     return value;
 }
 
+int ZprMonitor::getActValue( std::string usrPath ) {
+    int value;
+    DaemonInterface* tmpDaemon;
+    tmpDaemon = getDaemon_(DISKPATH, usrPath);
+    tmpDaemon->doMeasure();
+    value = tmpDaemon->getActValue();
+    delete tmpDaemon;         
+    return value;
+}
 
 DaemonInterface* ZprMonitor::getDaemon_(daemonType_ daemon) {
     DaemonInterface* tmpDaemon;
@@ -128,6 +142,12 @@ DaemonInterface* ZprMonitor::getDaemon_(daemonType_ daemon) {
     return tmpDaemon;
 }
 
+DaemonInterface* ZprMonitor::getDaemon_(daemonType_ daemon, std::string usrPath) {
+    DaemonInterface* tmpDaemon;
+    if (daemon == DISKPATH)
+        tmpDaemon = new DiskPathDaemon(usrPath);
+    return tmpDaemon;
+}
 
 int main() {
 }
