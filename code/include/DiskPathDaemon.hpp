@@ -1,3 +1,11 @@
+/**
+ * @file
+ *
+ * \class DiskPathDaemon
+ * Klasa ktorej obiekty - daemony sprawdzaja przez metode doMeasure() ilosc wolnego miejsca na partycji okreslonej przez sciezke diskPath_..
+ * Zawiera kod dla Windows / Linux. Metoda doMeasure() wysyla takze sygnal do zarejestrowanych slotow - obserwatorow.
+ */
+
 #ifndef DISKPATHDAEMON_HPP_
 #define DISKPATHDAEMON_HPP_
 #include<string>
