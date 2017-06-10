@@ -10,7 +10,7 @@ public:
 	virtual ~DaemonObserver( );
 	virtual void update(int) {} ;
 	virtual void operator()(int) {} ;
-    bool operator ==( const DaemonObserver& ) const;
+    bool operator ==( const DaemonObserver& ) const;        //potrzebny do boost signals2 disconnect
 };
 
 
