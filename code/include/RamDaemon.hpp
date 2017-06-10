@@ -1,3 +1,11 @@
+/**
+ * @file
+ *
+ * \class RamDaemon
+ * Klasa ktorej obiekty - daemony sprawdzaja przez metode doMeasure() zuzycie pamieci RAM w %.
+ * Zawiera kod dla Windows / Linux. Metoda doMeasure() wysyla takze sygnal do zarejestrowanych slotow - obserwatorow.
+ */
+
 #ifndef RAMDAEMON_HPP_
 #define RAMDAEMON_HPP_
 
